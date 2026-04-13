@@ -71,11 +71,11 @@ Significantly differentially expressed genes were separated into genes upregulat
 
 ## Gene Set Enrichment Analysis
 
-Gene Set Enrichment Analysis (GSEA) was additionally performed using ranked log2 fold-change values from all macrophage differential expression results with gseGO() [29]. Significant pathways were visualized using dot plots, ridge plots, and enrichment score plots generated with enrichplot.
+Gene Set Enrichment Analysis (GSEA) was additionally performed using ranked log2 fold-change values from all macrophage differential expression results with `gseGO()` [29]. Significant pathways were visualized using dot plots, ridge plots, and enrichment score plots generated with enrichplot.
 
 ## Heatmaps and Output Files
 
-The top 20 differentially expressed macrophage genes were visualized using Seurat DoHeatmap(), grouped by sample identity [30]. Intermediate results, processed Seurat objects, and output tables were exported in  `.csv` and `.rds` formats for reproducibility and downstream reporting.
+The top 20 differentially expressed macrophage genes were visualized using Seurat `DoHeatmap()`, grouped by sample identity [30]. Intermediate results, processed Seurat objects, and output tables were exported in  `.csv` and `.rds` formats for reproducibility and downstream reporting.
 
 # Discussion
 
