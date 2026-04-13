@@ -191,6 +191,12 @@ Marker gene analysis further supported the accuracy of automated cell-type annot
 
 Expression of canonical lineage markers further supported the accuracy of automated cell-type annotation (Figure 8). **Lyz2** expression was highest in macrophage, monocyte, and granulocyte populations. **Cd3d** was selectively enriched in T cells, while **Ms4a1** showed strong and specific expression in B-cell populations. **Epcam** expression was highest among epithelial populations and low in immune-associated clusters. These cell-type-restricted expression patterns provided independent validation of the SingleR-derived annotations.
 
+<img width="1392" height="856" alt="cell_counts" src="https://github.com/user-attachments/assets/3ea45d8b-28a5-4886-a523-d36fb1c24f55" />
+
+**Figure 9. Cell type composition across influenza infection timepoints.** Stacked bar plots show the proportional abundance of the ten most abundant SingleR-annotated cell types across samples (D02, D05, D08, D14, and Naive), with remaining low-abundance populations grouped as “Other.” Each bar represents one sample, and segment height corresponds to the proportion of cells assigned to each annotated cell type.
+
+Cell type composition was broadly similar across all samples, with neuronal, fibroblast, epithelial, and B-cell populations representing the largest fractions of the dataset (Figure 9). Neurons comprised the dominant population in most samples, although their relative abundance was reduced in D14 compared with other timepoints. In contrast, D14 showed increased proportions of immune-associated populations, including macrophages, monocytes, granulocytes, and B cells, suggesting a stronger inflammatory or recovery-associated immune response at this later stage of infection. Earlier post-infection samples (D02–D08) displayed intermediate compositions, with relatively stable proportions of structural cell populations such as fibroblasts and epithelial cells. Overall, these results indicate dynamic shifts in cellular composition over time following influenza infection, with the most pronounced immune enrichment observed at D14
+
 # Discussion
 
 # References
