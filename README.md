@@ -121,6 +121,18 @@ Unsupervised graph-based clustering was performed on 40,000 cells using the firs
 | Modularity score | 0.9561 |
 </div>
 
+<img width="1390" height="856" alt="UMAP_cluster" src="https://github.com/user-attachments/assets/373a5988-ab35-4909-8c89-86151f12ac14" />
+
+**Figure 5. UMAP visualization of unsupervised Seurat clusters.** Uniform Manifold Approximation and Projection (UMAP) of 40,000 filtered cells based on the first 20 principal components. Cells are colored according to graph-based Seurat cluster assignments generated using the Louvain algorithm at a resolution of 0.5. Cluster labels (0–29) indicate the 30 transcriptionally distinct communities identified.
+
+UMAP visualization revealed clear transcriptional structure within the dataset, with cells separating into 30 discrete and well-defined clusters (Figure 5). Several large clusters contained substantial numbers of cells, while smaller peripheral clusters likely represented rarer cell populations. The clear separation between clusters is consistent with the high modularity score obtained during graph-based clustering and indicates substantial cellular heterogeneity within the nasal mucosa. These unsupervised clusters formed the basis for subsequent cell-type annotation using SingleR and downstream differential expression analyses.
+
+<img width="1384" height="856" alt="UMAP_sample_identity" src="https://github.com/user-attachments/assets/8325ea06-112b-46a8-9bf4-0e7c8eb0beb2" />
+
+**Figure 6. UMAP visualization colored by sample identity.** UMAP of the filtered single-cell dataset colored according to sample/timepoint identity (Naive, D02, D05, D08, and D14). Cells from all samples are projected onto the same low-dimensional embedding to assess mixing across biological conditions and potential batch effects.
+
+Cells from all five samples were broadly distributed across the same UMAP structure, with substantial overlap observed within most clusters (Figure 6). This indicates that clustering was driven primarily by shared transcriptional cell states rather than by sample-specific technical effects. Although modest enrichment of certain samples was observed within selected regions, no major sample-exclusive clusters were detected. These results suggest minimal batch effects and support the suitability of the integrated dataset for comparative downstream analyses across infection timepoints.
+
 # Discussion
 
 # References
