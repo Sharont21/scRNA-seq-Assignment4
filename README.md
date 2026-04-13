@@ -77,6 +77,21 @@ Gene Set Enrichment Analysis (GSEA) was additionally performed using ranked log2
 
 The top 20 differentially expressed macrophage genes were visualized using Seurat `DoHeatmap()`, grouped by sample identity [30]. Intermediate results, processed Seurat objects, and output tables were exported in  `.csv` and `.rds` formats for reproducibility and downstream reporting.
 
+# Results
+
+## Quality control and preprocessing
+
+<img width="1388" height="851" alt="violin_plot_before_QC" src="https://github.com/user-attachments/assets/737df4ba-264c-417b-b5fd-501186370189" />
+
+**Figure 1. Quality-control metrics prior to filtering of single-cell RNA-seq data.** Distributions of the number of detected genes per cell (`nFeature_RNA`), total transcript counts per cell (`nCount_RNA`), and percentage of mitochondrial transcripts (`percent.mt`) are shown across samples (D02, D05, D08, D14, and Naive) using violin plots. Each violin represents the density of cells across observed values for the indicated metric.
+
+Quality-control metrics were examined prior to filtering to assess dataset consistency and identify low-quality cells (Figure 1). The distributions of detected genes and transcript counts were broadly similar across all samples, indicating comparable sequencing depth and capture efficiency between conditions. Most cells contained approximately 900–3500 detected genes and 3,500–6,000 transcript counts, although some higher-count outliers were present. Mitochondrial transcript percentages were generally low across samples, with the majority of cells below 5%. However, a subset of cells in each sample showed elevated mitochondrial content approaching 15%, consistent with stressed or damaged cells. These results supported the use of filtering thresholds to remove poor-quality observations prior to downstream analysis.
+
+<img width="1388" height="854" alt="image" src="https://github.com/user-attachments/assets/afd0c693-5d8e-44a7-9e7a-2af0ca5707c0" />
+
+**Figure 2. Relationship between transcript counts and detected genes prior to filtering.** Scatter plot showing the relationship between total transcript counts per cell (`nCount_RNA`) and the number of detected genes per cell (`nFeature_RNA`) across all samples. Each point represents a single cell and is colored according to sample identity (D02, D05, D08, D14, and Naive).
+
+The relationship between sequencing depth and gene complexity was assessed prior to filtering (Figure 2). A clear positive association was observed, with cells containing higher transcript counts generally exhibiting larger numbers of detected genes, consistent with expected high-quality single-cell libraries. Cells from all five samples overlapped extensively within the main density region, indicating comparable data quality across experimental groups and no obvious sample-specific technical separation. A smaller population of outlier cells with high transcript counts but relatively low gene complexity was also observed, which may represent damaged cells, ambient RNA contamination, or multiplets. These results supported the application of downstream quality-control filtering.
 # Discussion
 
 # References
