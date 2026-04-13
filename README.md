@@ -222,6 +222,22 @@ Functional enrichment analysis revealed distinct biological programs associated 
 
 Gene set enrichment analysis identified broad functional differences between macrophages at early (D02) and later (D14) infection stages (Figure 12). Activated pathways were primarily associated with mitochondrial translation, mitochondrial gene expression, and vesicle budding processes, indicating enhanced metabolic and biosynthetic activity in one macrophage state. In contrast, suppressed pathways were strongly enriched for immune-related processes including cell activation, regulation of immune response, leukocyte activation, innate immune response, cytokine production, and defense response to symbiont. These findings suggest that macrophages undergo substantial temporal remodeling during influenza infection, with later-stage cells exhibiting reduced inflammatory signaling alongside increased metabolic and organelle-associated functions. Overall, the GSEA results support a transition from an early immune-activated macrophage phenotype toward a more resolved or altered functional state over time.
 
+**Table 4. Representative differentially expressed genes in macrophages comparing D02 and D14 samples.** The top five genes upregulated in D02 and the top five genes upregulated in D14 are shown based on log₂ fold change and adjusted P value. Positive log₂ fold change values indicate higher expression in D02 macrophages, while negative values indicate higher expression in D14 macrophages.
+
+Comparison of macrophage transcriptomes between D02 and D14 identified distinct sets of differentially expressed genes associated with early and late infection stages (Table 4). Genes most strongly upregulated in D02 showed positive fold changes, with the largest increase reaching log₂FC = 2.47, indicating activation of an early-response transcriptional program in a subset of macrophages. Several additional D02-enriched genes also displayed moderate positive fold changes, consistent with heightened inflammatory or stress-associated activity during the early stage of infection. In contrast, the top genes upregulated in D14 exhibited negative fold changes ranging from −0.64 to −1.70 and were generally expressed across a high proportion of macrophages, suggesting a broader late-stage transcriptional shift affecting much of the population. These findings support substantial temporal remodeling of macrophage function during influenza infection, with distinct molecular programs operating during early and later stages of the response.
+
+| Gene | Direction | avg_log2FC | adj.P |
+|------|-----------|------------|-------|
+| Gene1 | Up in D02 | 2.473 | 8.92E-19 |
+| Gene2 | Up in D02 | 1.408 | 2.65E-06 |
+| Gene3 | Up in D02 | 0.841 | 2.26E-06 |
+| Gene4 | Up in D02 | 0.671 | 4.50E-07 |
+| Gene5 | Up in D02 | 0.665 | 4.22E-06 |
+| Gene6 | Up in D14 | -1.695 | 1.08E-13 |
+| Gene7 | Up in D14 | -0.697 | 1.62E-35 |
+| Gene8 | Up in D14 | -0.692 | 7.57E-39 |
+| Gene9 | Up in D14 | -0.650 | 1.58E-28 |
+| Gene10 | Up in D14 | -0.643 | 1.41E-36 |
 
 # Discussion
 
