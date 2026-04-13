@@ -92,6 +92,13 @@ Quality-control metrics were examined prior to filtering to assess dataset consi
 **Figure 2. Relationship between transcript counts and detected genes prior to filtering.** Scatter plot showing the relationship between total transcript counts per cell (`nCount_RNA`) and the number of detected genes per cell (`nFeature_RNA`) across all samples. Each point represents a single cell and is colored according to sample identity (D02, D05, D08, D14, and Naive).
 
 The relationship between sequencing depth and gene complexity was assessed prior to filtering (Figure 2). A clear positive association was observed, with cells containing higher transcript counts generally exhibiting larger numbers of detected genes, consistent with expected high-quality single-cell libraries. Cells from all five samples overlapped extensively within the main density region, indicating comparable data quality across experimental groups and no obvious sample-specific technical separation. A smaller population of outlier cells with high transcript counts but relatively low gene complexity was also observed, which may represent damaged cells, ambient RNA contamination, or multiplets. These results supported the application of downstream quality-control filtering.
+
+<img width="1384" height="856" alt="violin_plot_after_QC" src="https://github.com/user-attachments/assets/47a8791c-6ac1-4bd9-9570-d0bddd2293ac" />
+
+**Figure 3. Quality-control metrics after filtering of single-cell RNA-seq data.** Violin plots showing the distributions of detected genes per cell (`nFeature_RNA`), total transcript counts per cell (`nCount_RNA`), and percentage of mitochondrial transcripts (`percent.mt`) across samples (D02, D05, D08, D14, and Naive) following quality-control filtering. Each violin represents the density of cells for the indicated metric within each sample.
+
+Quality-control metrics remained broadly consistent across all samples following filtering (Figure 3). Similar distributions of detected genes and transcript counts were observed between timepoints, indicating comparable sequencing depth and library complexity across conditions. Mitochondrial transcript percentages were low in all groups, with most cells below 5%, consistent with retention of high-quality cells. Compared with the pre-filtering dataset, only minor changes were observed in the overall distributions, suggesting that relatively few cells failed the applied thresholds and that the provided dataset had already undergone substantial preprocessing or consisted primarily of high-quality cells suitable for downstream analysis.
+
 # Discussion
 
 # References
