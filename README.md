@@ -165,7 +165,21 @@ Automated cell-type annotation identified a diverse mixture of epithelial, immun
 
 **Figure 7. UMAP visualization of SingleR-annotated cell populations.** UMAP projection of 40,000 filtered cells colored according to predicted cell identities assigned using the SingleR reference-based annotation framework with the MouseRNAseqData reference. Labels indicate the dominant predicted population occupying each transcriptionally distinct region.
 
-Reference-based annotation assigned biologically meaningful identities to the unsupervised clusters identified by Seurat (Figure X). Major populations included neurons, epithelial cells, fibroblasts, monocytes, macrophages, B cells, endothelial cells, granulocytes, T cells, and NK cells. Large neuronal and epithelial compartments were evident, alongside multiple immune-associated populations distributed across distinct transcriptional regions. Closely related monocyte and macrophage populations occupied neighboring areas of the embedding, consistent with related myeloid lineages. Overall, the annotated UMAP confirmed substantial cellular heterogeneity within the nasal mucosa and provided a biologically interpretable framework for downstream comparative analyses
+Reference-based annotation assigned biologically meaningful identities to the unsupervised clusters identified by Seurat (Figure X). Major populations included neurons, epithelial cells, fibroblasts, monocytes, macrophages, B cells, endothelial cells, granulocytes, T cells, and NK cells. Large neuronal and epithelial compartments were evident, alongside multiple immune-associated populations distributed across distinct transcriptional regions. Closely related monocyte and macrophage populations occupied neighboring areas of the embedding, consistent with related myeloid lineages. Overall, the annotated UMAP confirmed substantial cellular heterogeneity within the nasal mucosa and provided a biologically interpretable framework for downstream comparative analyses.
+
+**Table 3. Representative marker genes identified for annotated cell populations.** Top differentially expressed marker genes identified using Seurat `FindAllMarkers()` on a downsampled dataset. Marker genes are shown for major predicted cell populations and represent transcripts enriched relative to other cells in the dataset.
+
+Marker gene analysis further supported the accuracy of automated cell-type annotation by identifying canonical lineage-associated transcripts within each predicted population (Table 3). B-cell populations were characterized by strong enrichment of **Cd79a**, **Cd79b**, **Igkc**, and **Ighm**, consistent with B-cell receptor signaling and immunoglobulin expression. Myeloid populations including monocytes and macrophages showed elevated expression of genes such as **Lyz2**, **Fcer1g**, and **C1qa**, while fibroblast populations were enriched for extracellular matrix-associated genes including **Col1a1** and **Col1a2**. Endothelial cells expressed vascular markers such as **Pecam1** and **Kdr**, whereas epithelial populations were marked by keratin genes including **Krt8** and **Krt18**. Together, these lineage-specific transcriptional signatures were consistent with known biology and validated the SingleR-derived cell identity assignments.
+| Cell Type | Representative Marker Genes |
+|-----------|-----------------------------|
+| B cells | Cd79a, Cd79b, Igkc, Ighm |
+| T cells | Cd3d, Cd3e, Trbc2 |
+| Macrophages | C1qa, C1qb, Lyz2, Fcer1g |
+| Monocytes | S100a8, S100a9, Lyz2 |
+| Fibroblasts | Col1a1, Col1a2, Sparc |
+| Endothelial cells | Pecam1, Kdr, Emcn |
+| Epithelial cells | Krt8, Krt18, Krt19 |
+| Neurons | Snap25, Tubb3, Elavl4 |
 
 # Discussion
 
