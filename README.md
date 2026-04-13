@@ -105,6 +105,21 @@ Quality-control metrics remained broadly consistent across all samples following
 
 Principal component analysis was used to summarize the major sources of variation in the dataset prior to clustering and visualization (Figure X). The elbow plot showed a steep decline in variance explained across the first several PCs, followed by a more gradual decrease after approximately PC10 and a plateauing trend by around PC15–20. This pattern indicates that the earliest components captured the strongest biological signal, whereas later components contributed progressively less additional information. Based on this distribution, the first 20 principal components were retained for downstream nearest-neighbor graph construction, clustering, and UMAP visualization.
 
+**Table 1. Summary of graph-based clustering parameters and outcomes.** Key parameters and outputs from unsupervised clustering analysis of the filtered single-cell RNA-seq dataset. Cells were clustered using a shared nearest-neighbor graph constructed from the first 20 principal components and partitioned using the Louvain community detection algorithm at a resolution of 0.5.
+
+Unsupervised graph-based clustering was performed on 40,000 cells using the first 20 principal components (Table 1). Application of the Louvain algorithm at a resolution of 0.5 identified 30 transcriptionally distinct clusters. The high modularity score (0.9561) indicated strong separation between communities, supporting the presence of substantial cellular heterogeneity within the nasal mucosa dataset prior to downstream annotation and differential expression analyses.
+
+<div align="center">
+  
+| Parameter | Value |
+|-----------|-------|
+| Cells analyzed | 40,000 |
+| Principal components used | 20 |
+| Clustering algorithm | Louvain |
+| Resolution | 0.5 |
+| Number of clusters identified | 30 |
+| Modularity score | 0.9561 |
+</div>
 
 # Discussion
 
