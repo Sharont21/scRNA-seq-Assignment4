@@ -214,6 +214,14 @@ Differential expression analysis revealed marked transcriptional differences in 
 
 Functional enrichment analysis revealed distinct biological programs associated with early and later infection stages in macrophages (Figure 11). Genes upregulated at D02 were enriched for processes related to cytoplasmic translation, gliogenesis, iron ion transport, and regulation of ferroptosis, suggesting an early response characterized by active protein synthesis, metabolic adaptation, and stress-related signaling. In contrast, genes upregulated at D14 were strongly enriched for ribonucleoprotein complex biogenesis, ribosome biogenesis, protein folding, heat response, and antigen processing and presentation via MHC class II pathways. These later-stage enrichments indicate a transition toward cellular recovery, proteostasis, and enhanced antigen presentation functions. Overall, the results support dynamic temporal remodeling of macrophage activity during influenza infection, with early inflammatory/metabolic responses followed by later immune regulatory and presentation-associated programs.
 
+<p align="center">
+  <img width="696" height="424" alt="GSEA_macrophages" src="https://github.com/user-attachments/assets/230b5f75-3850-4abb-af27-ee9990383037" />
+</p>
+
+**Figure 12. Gene set enrichment analysis of macrophages comparing D02 and D14 samples.** Dot plot showing significantly enriched Gene Ontology Biological Process (GO BP) pathways identified by GSEA using ranked differential expression results from macrophages. Enriched pathways are separated into activated and suppressed gene programs based on normalized enrichment direction. Dot size represents the number of genes contributing to each pathway, x-axis indicates gene ratio, and color reflects adjusted P value.
+
+Gene set enrichment analysis identified broad functional differences between macrophages at early (D02) and later (D14) infection stages (Figure 12). Activated pathways were primarily associated with mitochondrial translation, mitochondrial gene expression, and vesicle budding processes, indicating enhanced metabolic and biosynthetic activity in one macrophage state. In contrast, suppressed pathways were strongly enriched for immune-related processes including cell activation, regulation of immune response, leukocyte activation, innate immune response, cytokine production, and defense response to symbiont. These findings suggest that macrophages undergo substantial temporal remodeling during influenza infection, with later-stage cells exhibiting reduced inflammatory signaling alongside increased metabolic and organelle-associated functions. Overall, the GSEA results support a transition from an early immune-activated macrophage phenotype toward a more resolved or altered functional state over time.
+
 
 # Discussion
 
