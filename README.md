@@ -197,12 +197,22 @@ Expression of canonical lineage markers further supported the accuracy of automa
 
 Cell type composition was broadly similar across all samples, with neuronal, fibroblast, epithelial, and B-cell populations representing the largest fractions of the dataset (Figure 9). Neurons comprised the dominant population in most samples, although their relative abundance was reduced in D14 compared with other timepoints. In contrast, D14 showed increased proportions of immune-associated populations, including macrophages, monocytes, granulocytes, and B cells, suggesting a stronger inflammatory or recovery-associated immune response at this later stage of infection. Earlier post-infection samples (D02–D08) displayed intermediate compositions, with relatively stable proportions of structural cell populations such as fibroblasts and epithelial cells. Overall, these results indicate dynamic shifts in cellular composition over time following influenza infection, with the most pronounced immune enrichment observed at D14
 
-<img width="696" height="430" alt="image" src="https://github.com/user-attachments/assets/6e60bddc-32e2-4866-8b80-cfcf55bb33d3" />
+<p align="center">
+  <img width="696" height="430" alt="image" src="https://github.com/user-attachments/assets/6e60bddc-32e2-4866-8b80-cfcf55bb33d3" />
+</p>
 
 **Figure 10. Differential gene expression in macrophages between D02 and D14 samples.** Volcano plot showing genes differentially expressed in macrophages comparing D02 and D14 timepoints. Each point represents one gene, positioned by log₂ fold change (x-axis) and adjusted significance (−log₁₀ adjusted P value; y-axis). Genes meeting both adjusted P < 0.05 and |log₂ fold change| > 0.5 are highlighted in red, while genes meeting only one threshold are shown in blue or orange. Selected significant genes are labelled.
 
 Differential expression analysis revealed marked transcriptional differences in macrophages between early (D02) and later (D14) infection stages (Figure X). Multiple genes were significantly upregulated in D02 relative to D14, including several ribosomal protein genes (_Rps27_, _Rps28_,_ Rps21_, _Rps29_, _Rpl37_, and _Rpl39_), suggesting increased translational activity or heightened cellular activation during the early immune response. Additional genes such as _Hspa1a_ and _Gpr65_ were also elevated in D02, consistent with stress-response and inflammatory signaling pathways. In contrast, fewer genes showed strong upregulation in D14, with _Obp1a_ representing one of the most prominent later-stage markers. Overall, these results indicate that macrophages undergo substantial temporal transcriptional remodeling during influenza infection, shifting from an activated early-response state at D02 toward a different functional profile by D14.
 
+<p>
+  <img width="49%" src="https://github.com/user-attachments/assets/17abe23a-eee0-4522-a597-d2bb2fdaab13" alt="ORA_upregulated_D02" />
+  <img width="49%" src="https://github.com/user-attachments/assets/d447eb14-fe83-469a-b617-d06a0588b17c" alt="ORA_upregulated_D14" />
+</p>
+
+**Figure 11. Gene Ontology biological process enrichment of differentially expressed macrophage genes.** Dot plots show over-representation analysis (ORA) of significantly upregulated genes in macrophages comparing D02 and D14 samples. The left panel shows biological processes enriched among genes upregulated in D02, while the right panel shows processes enriched among genes upregulated in D14. Dot size represents the number of genes associated with each term, x-axis indicates gene ratio, and color reflects adjusted P value.
+
+Functional enrichment analysis revealed distinct biological programs associated with early and later infection stages in macrophages (Figure 11). Genes upregulated at D02 were enriched for processes related to cytoplasmic translation, gliogenesis, iron ion transport, and regulation of ferroptosis, suggesting an early response characterized by active protein synthesis, metabolic adaptation, and stress-related signaling. In contrast, genes upregulated at D14 were strongly enriched for ribonucleoprotein complex biogenesis, ribosome biogenesis, protein folding, heat response, and antigen processing and presentation via MHC class II pathways. These later-stage enrichments indicate a transition toward cellular recovery, proteostasis, and enhanced antigen presentation functions. Overall, the results support dynamic temporal remodeling of macrophage activity during influenza infection, with early inflammatory/metabolic responses followed by later immune regulatory and presentation-associated programs.
 
 
 # Discussion
