@@ -185,6 +185,12 @@ Marker gene analysis further supported the accuracy of automated cell-type annot
 | Neurons | Snap25, Tubb3, Elavl4 |
 </div>
 
+<img width="1388" height="860" alt="image" src="https://github.com/user-attachments/assets/3bb3947b-5150-473c-af48-3e414fd65c0f" />
+
+**Figure 8. Canonical marker gene expression across annotated cell populations.** Violin plots showing normalized expression distributions of representative lineage markers across SingleR-annotated cell types. **Lyz2** marks myeloid populations, **Cd3d** marks T cells, **Ms4a1** marks B cells, and **Epcam** marks epithelial cells.
+
+Expression of canonical lineage markers further supported the accuracy of automated cell-type annotation (Figure 8). **Lyz2** expression was highest in macrophage, monocyte, and granulocyte populations. **Cd3d** was selectively enriched in T cells, while **Ms4a1** showed strong and specific expression in B-cell populations. **Epcam** expression was highest among epithelial populations and low in immune-associated clusters. These cell-type-restricted expression patterns provided independent validation of the SingleR-derived annotations.
+
 # Discussion
 
 # References
