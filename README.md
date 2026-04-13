@@ -99,6 +99,13 @@ The relationship between sequencing depth and gene complexity was assessed prior
 
 Quality-control metrics remained broadly consistent across all samples following filtering (Figure 3). Similar distributions of detected genes and transcript counts were observed between timepoints, indicating comparable sequencing depth and library complexity across conditions. Mitochondrial transcript percentages were low in all groups, with most cells below 5%, consistent with retention of high-quality cells. Compared with the pre-filtering dataset, only minor changes were observed in the overall distributions, suggesting that relatively few cells failed the applied thresholds and that the provided dataset had already undergone substantial preprocessing or consisted primarily of high-quality cells suitable for downstream analysis.
 
+<img width="1382" height="854" alt="image" src="https://github.com/user-attachments/assets/2454ffb1-23b1-4b9d-bd0a-3fedde96fab4" />
+
+**Figure 4. Elbow plot for principal component selection.** Elbow plot showing the standard deviation explained by each principal component (PC) following principal component analysis of the 2,000 highly variable genes. The first 30 PCs are displayed to assess the contribution of successive components to total transcriptional variance.
+
+Principal component analysis was used to summarize the major sources of variation in the dataset prior to clustering and visualization (Figure X). The elbow plot showed a steep decline in variance explained across the first several PCs, followed by a more gradual decrease after approximately PC10 and a plateauing trend by around PC15–20. This pattern indicates that the earliest components captured the strongest biological signal, whereas later components contributed progressively less additional information. Based on this distribution, the first 20 principal components were retained for downstream nearest-neighbor graph construction, clustering, and UMAP visualization.
+
+
 # Discussion
 
 # References
