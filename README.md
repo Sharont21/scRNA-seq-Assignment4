@@ -27,7 +27,7 @@ In this study, single-cell RNA sequencing data from murine nasal mucosa followin
 
 # Methods
 ## Computational Environment
-All analyses were performed in R (v4.5.1) using RStudio. Single-cell RNA sequencing analyses were conducted using Seurat (v5.4.0) [13]. Additional downstream analyses were performed using clusterProfiler, SingleR, celldex, ggplot2, dplyr, tidyverse, and org.Mm.eg.db. All analyses were performed in an R Markdown workflow to ensure reproducibility.
+All analyses were performed in R (v4.5.1) using RStudio. Single-cell RNA sequencing analyses were conducted using Seurat (v5.4.0) [13]. Additional downstream analyses were performed using clusterProfiler(v4.16.0), SingleR(v2.10.0), celldex(v1.18.0), ggplot2(v4.0.2), dplyr(v1.2.0), tidyverse(v2.0.0), org.Mm.eg.db(v3.21.0), EnhancedVolcano(v1.26.0), SingleCellExperiment(v1.30.1), and enrichplot(v1.28.4). All analyses were performed in an R Markdown workflow to ensure reproducibility.
 
 ## Data Acquisition and Input
 
@@ -35,11 +35,11 @@ A preprocessed Seurat object containing murine nasal mucosa single-cell RNA sequ
 
 ## Quality Control and Filtering
 
-Initial cell quality assessment was performed using three standard metrics: number of detected genes per cell (`nFeature_RNA`), total transcript counts per cell (`nCount_RNA`), and percentage of mitochondrial transcripts (`percent.mt`) [15]. Mitochondrial percentages were calculated using genes beginning with the mouse mitochondrial prefix `mt-` [15]. Quality control metrics were visualized using violin plots. Cells with fewer than 200 detected genes or mitochondrial transcript percentages greater than 15% were removed to exclude low-quality, stressed, or dying cells.
+Initial cell quality assessment was performed using three standard metrics: number of detected genes per cell (`nFeature_RNA`), total transcript counts per cell (`nCount_RNA`), and percentage of mitochondrial transcripts (`percent.mt`) [15]. Mitochondrial percentages were calculated using genes beginning with the mouse mitochondrial prefix `mt-` [15]. Quality control metrics were visualized using violin plots and feature scatter plots. Cells with fewer than 200 detected genes or mitochondrial transcript percentages greater than 15% were removed to exclude low-quality, stressed, or dying cells.
 
-## Normalization and Feature Selection
+## Downsampling, Normalization and Feature Selection
 
-Filtered cells were log-normalized using the `LogNormalize` method implemented in Seurat [16]. Highly variable genes were identified using the variance stabilizing transformation (`vst`) method, retaining the top 2,000 most variable genes for downstream analysis. Gene expression values were subsequently scaled prior to dimensionality reduction.
+To improve computational efficiency while retaining balanced representation across samples, the filtered dataset was downsampled to 8,000 cells per sample prior to downstream analysis. Cells were log-normalized using the `LogNormalize` method with a scale factor of 10,000 [16]. Highly variable genes were identified using the variance stabilizing transformation (`vst`) method, retaining the top 2,000 most variable genes for downstream analysis. Expression values were then scaled prior to dimensionality reduction.
 
 ## Dimensionality Reduction
 
@@ -47,31 +47,35 @@ Principal component analysis (PCA) was performed using the variable genes identi
 
 ## Graph-Based Clustering and UMAP Visualization
 
-Cells were embedded into a shared nearest-neighbor graph using the first 20 principal components. Clusters were identified using Seurat’s graph-based clustering algorithm with a resolution parameter of 0.5. Uniform Manifold Approximation and Projection (UMAP) was then applied using the same 20 principal components to generate a two-dimensional representation of transcriptional similarity among cells [17].
-
-## Marker Gene Identification
-
-Cluster-specific marker genes were identified using Seurat’s `FindAllMarkers()` function [18]. Due to the large dataset size, cells were downsampled to 5,000 prior to marker detection to improve computational efficiency while retaining representative biological structure. Only positively enriched genes expressed in at least 25% of cells with log fold-change greater than 0.25 were retained as cluster markers.
+Cells were embedded into a shared nearest-neighbor graph using the first 20 principal components. Clusters were identified using Seurat’s graph-based clustering algorithm with a resolution parameter of 0.5. Uniform Manifold Approximation and Projection (UMAP) was then applied using the same 20 principal components to generate a two-dimensional representation of transcriptional similarity among cells [17]. UMAP projections were visualized by cluster identity and sample/timepoint (orig.ident) to assess clustering structure and potential batch effects.
 
 ## Automated Cell Type Annotation
 
-Automated cluster annotation was performed using SingleR (v2.10.0) [19]. Average expression profiles were calculated for each cluster and compared against the MouseRNAseq reference dataset from celldex (v1.18.0) [20]. Predicted labels were used to assign biological identities to clusters, including neurons, epithelial cells, fibroblasts, macrophages, monocytes, B cells, NK cells, granulocytes, and endothelial cells.
+The Seurat object was converted to a SingleCellExperiment object for compatibility with SingleR [18]. Automated cell type annotation was performed using SingleR with the MouseRNAseq reference dataset from celldex [19,20]. Predicted labels were added to the Seurat metadata and used as identities for downstream visualization. Annotation confidence was assessed using score heatmaps and delta distribution plots. Predicted cell populations included neurons, epithelial cells, fibroblasts, macrophages, monocytes, B cells, NK cells, granulocytes, and endothelial cells.
 
-## Feature Plot Visualization
+## Marker Gene Identification and Validation
 
-Canonical marker genes were visualized using Seurat `FeaturePlot()` to support cluster annotation and biological interpretation [21]. Genes selected included `Cd3d` (T cells), `Ms4a1` (B cells), `Lyz2` (myeloid/macrophage populations), and `Epcam` (epithelial cells).
+To support annotation quality, marker genes were identified using Seurat’s `FindAllMarkers()` function on a downsampled subset of 500 cells [21]. Only positively enriched genes expressed in at least 25% of cells with log fold-change greater than 0.25 were retained. The top five markers per annotated cell type were extracted. Canonical marker genes were further visualized using `FeaturePlot()` and `VlnPlot()`, including Cd3d, Cd8a, Ms4a1, Lyz2, Csf1r, Epcam, Krt8, Ncr1, and Itgax [22,23].
+
+## Cell Composition Analysis
+
+Changes in cellular composition across samples were assessed by calculating both proportional abundance and absolute counts of annotated cell types per sample using metadata summaries generated with dplyr and visualized using stacked bar plots in ggplot2 [24].
 
 ## Differential Expression Analysis
 
-Macrophage populations were selected for focused downstream analysis due to their established role in innate antiviral immunity. Cells annotated as macrophages were subsetted, and sample identities were reassigned according to collection timepoint using the` orig.ident` metadata field [15]. Differential expression analysis was performed between early infection (D02) and later infection (D14) using Seurat’s `FindMarkers()` function with a minimum detection threshold of 10% (`min.pct = 0.1`). Genes with adjusted p-values less than 0.05 were considered statistically significant [22].
+Macrophage populations were selected for focused downstream analysis due to their established role in innate antiviral immunity. Cells annotated as macrophages were subsetted, and sample identities were reassigned according to collection timepoint using the `orig.ident` metadata field [15]. Differential expression analysis was performed between early infection (D02) and later infection (D14) using Seurat’s `FindMarkers()` function with `min.pct = 0.1` and `logfc.threshold = 0` [25]. Genes with adjusted p-values less than 0.05 were considered statistically significant. Differential expression results were visualized using volcano plots generated with EnhancedVolcano [26].
 
 ## Functional Enrichment Analysis
 
-Significantly differentially expressed genes were analyzed for Gene Ontology (GO) Biological Process over-representation using clusterProfiler (v4.16.0) with the mouse annotation database org.Mm.eg.db (v3.21.0) [23,24]. Multiple-testing correction was performed using the Benjamini–Hochberg method, and terms with adjusted p-values below 0.05 were considered significantly enriched.
+Significantly differentially expressed genes were separated into genes upregulated in D02 and D14 macrophages and analyzed for Gene Ontology (GO) Biological Process over-representation using clusterProfiler with the mouse annotation database org.Mm.eg.db [27,28]. Multiple-testing correction was performed using the Benjamini–Hochberg method, and terms with adjusted p-values below 0.05 were considered significantly enriched. Dot plots were used to visualize enriched pathways.
 
-## Statistical Analysis and Visualization
+## Gene Set Enrichment Analysis
 
-All statistical analyses and data visualizations were conducted in R using Seurat, clusterProfiler, SingleR, and ggplot2. Figures generated included quality control violin plots, UMAP projections, annotated cluster visualizations, feature plots, and enrichment dot plots. Output files were saved in `.csv` and `.rds` formats for reproducibility and downstream reporting.
+Gene Set Enrichment Analysis (GSEA) was additionally performed using ranked log2 fold-change values from all macrophage differential expression results with gseGO() [29]. Significant pathways were visualized using dot plots, ridge plots, and enrichment score plots generated with enrichplot.
+
+## Heatmaps and Output Files
+
+The top 20 differentially expressed macrophage genes were visualized using Seurat DoHeatmap(), grouped by sample identity [30]. Intermediate results, processed Seurat objects, and output tables were exported in  `.csv` and `.rds` formats for reproducibility and downstream reporting.
 
 # Discussion
 
@@ -110,16 +114,28 @@ All statistical analyses and data visualizations were conducted in R using Seura
 
 [17] Run umap - runumap. - RunUMAP • Seurat. (n.d.). https://satijalab.org/seurat/reference/runumap 
 
-[18] Gene expression markers for all identity classes - findallmarkers. - FindAllMarkers • Seurat. (n.d.). https://satijalab.org/seurat/reference/findallmarkers 
+[18] Drisso. (n.d.). Drisso/Singlecellexperiment: Clone of the Bioconductor Repository for the singlecellexperiment package, see https://bioconductor.org/packages/devel/bioc/html/singlecellexperiment.html for the official development version. GitHub. https://github.com/drisso/SingleCellExperiment 
 
-[19] Dviraran. (n.d.). Dviraran/Singler: Singler: Single-cell RNA-seq cell types recognition (legacy version). GitHub. https://github.com/dviraran/singler 
+[19] SingleR-inc. (n.d.). Singler-Inc/celldex: Collection of cell type reference datasets. GitHub. https://github.com/SingleR-inc/celldex 
 
-[20] SingleR-inc. (n.d.). Singler-Inc/celldex: Collection of cell type reference datasets. GitHub. https://github.com/SingleR-inc/celldex 
+[20] Dviraran. (n.d.). Dviraran/Singler: Singler: Single-cell RNA-seq cell types recognition (legacy version). GitHub. https://github.com/dviraran/singler 
 
-[21] Visualize “features” on a dimensional reduction plot - featureplot. - FeaturePlot • Seurat. (n.d.). https://satijalab.org/seurat/reference/featureplot 
+[21] Gene expression markers for all identity classes - findallmarkers. - FindAllMarkers • Seurat. (n.d.). https://satijalab.org/seurat/reference/findallmarkers 
 
-[22] Gene expression markers of identity classes - findmarkers. - FindMarkers • Seurat. (n.d.). https://satijalab.org/seurat/reference/findmarkers 
+[22] Visualize “features” on a dimensional reduction plot - featureplot. - FeaturePlot • Seurat. (n.d.). https://satijalab.org/seurat/reference/featureplot 
 
-[23] YuLab-SMU. (n.d.). Yulab-SMU/Clusterprofiler: :bar_chart: A universal enrichment tool for interpreting OMICS data. GitHub. https://github.com/YuLab-SMU/clusterProfiler 
+[23] Single cell violin plot - vlnplot. - VlnPlot • Seurat. (n.d.). https://satijalab.org/seurat/reference/vlnplot 
 
-[24] Org.Mm.eg.db. Bioconductor. (n.d.). https://bioconductor.org/packages/release/data/annotation/html/org.Mm.eg.db.html 
+[24] Holtz, Y. (n.d.). Data visualization with R and GGPLOT2: The R Graph Gallery. Data visualization with R and ggplot2 | the R Graph Gallery. https://r-graph-gallery.com/ggplot2-package.html 
+
+[25] Gene expression markers of identity classes - findmarkers. - FindMarkers • Seurat. (n.d.). https://satijalab.org/seurat/reference/findmarkers 
+
+[26] Kevinblighe. (n.d.). Kevinblighe/Enhancedvolcano: Publication-ready volcano plots with enhanced colouring and labeling. GitHub. https://github.com/kevinblighe/enhancedvolcano 
+
+[27] YuLab-SMU. (n.d.). Yulab-SMU/Clusterprofiler: :bar_chart: A universal enrichment tool for interpreting OMICS data. GitHub. https://github.com/YuLab-SMU/clusterProfiler 
+
+[28] Org.Mm.eg.db. Bioconductor. (n.d.). https://bioconductor.org/packages/release/data/annotation/html/org.Mm.eg.db.html 
+
+[29] GSEGO: GSEGO. RDocumentation. (n.d.-a). https://www.rdocumentation.org/packages/clusterProfiler/versions/3.0.4/topics/gseGO 
+
+[30] Feature expression heatmap - doheatmap. - DoHeatmap • Seurat. (n.d.). https://satijalab.org/seurat/reference/doheatmap 
