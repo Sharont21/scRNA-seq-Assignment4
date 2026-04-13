@@ -170,6 +170,9 @@ Reference-based annotation assigned biologically meaningful identities to the un
 **Table 3. Representative marker genes identified for annotated cell populations.** Top differentially expressed marker genes identified using Seurat `FindAllMarkers()` on a downsampled dataset. Marker genes are shown for major predicted cell populations and represent transcripts enriched relative to other cells in the dataset.
 
 Marker gene analysis further supported the accuracy of automated cell-type annotation by identifying canonical lineage-associated transcripts within each predicted population (Table 3). B-cell populations were characterized by strong enrichment of **Cd79a**, **Cd79b**, **Igkc**, and **Ighm**, consistent with B-cell receptor signaling and immunoglobulin expression. Myeloid populations including monocytes and macrophages showed elevated expression of genes such as **Lyz2**, **Fcer1g**, and **C1qa**, while fibroblast populations were enriched for extracellular matrix-associated genes including **Col1a1** and **Col1a2**. Endothelial cells expressed vascular markers such as **Pecam1** and **Kdr**, whereas epithelial populations were marked by keratin genes including **Krt8** and **Krt18**. Together, these lineage-specific transcriptional signatures were consistent with known biology and validated the SingleR-derived cell identity assignments.
+
+<div align="center">
+  
 | Cell Type | Representative Marker Genes |
 |-----------|-----------------------------|
 | B cells | Cd79a, Cd79b, Igkc, Ighm |
@@ -180,6 +183,7 @@ Marker gene analysis further supported the accuracy of automated cell-type annot
 | Endothelial cells | Pecam1, Kdr, Emcn |
 | Epithelial cells | Krt8, Krt18, Krt19 |
 | Neurons | Snap25, Tubb3, Elavl4 |
+</div>
 
 # Discussion
 
