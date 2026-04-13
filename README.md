@@ -161,6 +161,12 @@ Automated cell-type annotation identified a diverse mixture of epithelial, immun
 | Astrocytes | 18 |
 </div>
 
+<img width="1394" height="864" alt="UMAP_SingleR" src="https://github.com/user-attachments/assets/042c6533-240f-4404-9210-b7f58a3732e1" />
+
+**Figure 7. UMAP visualization of SingleR-annotated cell populations.** UMAP projection of 40,000 filtered cells colored according to predicted cell identities assigned using the SingleR reference-based annotation framework with the MouseRNAseqData reference. Labels indicate the dominant predicted population occupying each transcriptionally distinct region.
+
+Reference-based annotation assigned biologically meaningful identities to the unsupervised clusters identified by Seurat (Figure X). Major populations included neurons, epithelial cells, fibroblasts, monocytes, macrophages, B cells, endothelial cells, granulocytes, T cells, and NK cells. Large neuronal and epithelial compartments were evident, alongside multiple immune-associated populations distributed across distinct transcriptional regions. Closely related monocyte and macrophage populations occupied neighboring areas of the embedding, consistent with related myeloid lineages. Overall, the annotated UMAP confirmed substantial cellular heterogeneity within the nasal mucosa and provided a biologically interpretable framework for downstream comparative analyses
+
 # Discussion
 
 # References
