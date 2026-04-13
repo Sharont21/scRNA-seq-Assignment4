@@ -197,6 +197,14 @@ Expression of canonical lineage markers further supported the accuracy of automa
 
 Cell type composition was broadly similar across all samples, with neuronal, fibroblast, epithelial, and B-cell populations representing the largest fractions of the dataset (Figure 9). Neurons comprised the dominant population in most samples, although their relative abundance was reduced in D14 compared with other timepoints. In contrast, D14 showed increased proportions of immune-associated populations, including macrophages, monocytes, granulocytes, and B cells, suggesting a stronger inflammatory or recovery-associated immune response at this later stage of infection. Earlier post-infection samples (D02–D08) displayed intermediate compositions, with relatively stable proportions of structural cell populations such as fibroblasts and epithelial cells. Overall, these results indicate dynamic shifts in cellular composition over time following influenza infection, with the most pronounced immune enrichment observed at D14
 
+<img width="696" height="430" alt="image" src="https://github.com/user-attachments/assets/6e60bddc-32e2-4866-8b80-cfcf55bb33d3" />
+
+**Figure 10. Differential gene expression in macrophages between D02 and D14 samples.** Volcano plot showing genes differentially expressed in macrophages comparing D02 and D14 timepoints. Each point represents one gene, positioned by log₂ fold change (x-axis) and adjusted significance (−log₁₀ adjusted P value; y-axis). Genes meeting both adjusted P < 0.05 and |log₂ fold change| > 0.5 are highlighted in red, while genes meeting only one threshold are shown in blue or orange. Selected significant genes are labelled.
+
+Differential expression analysis revealed marked transcriptional differences in macrophages between early (D02) and later (D14) infection stages (Figure X). Multiple genes were significantly upregulated in D02 relative to D14, including several ribosomal protein genes (_Rps27_, _Rps28_,_ Rps21_, _Rps29_, _Rpl37_, and _Rpl39_), suggesting increased translational activity or heightened cellular activation during the early immune response. Additional genes such as _Hspa1a_ and _Gpr65_ were also elevated in D02, consistent with stress-response and inflammatory signaling pathways. In contrast, fewer genes showed strong upregulation in D14, with _Obp1a_ representing one of the most prominent later-stage markers. Overall, these results indicate that macrophages undergo substantial temporal transcriptional remodeling during influenza infection, shifting from an activated early-response state at D02 toward a different functional profile by D14.
+
+
+
 # Discussion
 
 # References
