@@ -226,6 +226,8 @@ Gene set enrichment analysis identified broad functional differences between mac
 
 Comparison of macrophage transcriptomes between D02 and D14 identified distinct sets of differentially expressed genes associated with early and late infection stages (Table 4). Genes most strongly upregulated in D02 showed positive fold changes, with the largest increase reaching log₂FC = 2.47, indicating activation of an early-response transcriptional program in a subset of macrophages. Several additional D02-enriched genes also displayed moderate positive fold changes, consistent with heightened inflammatory or stress-associated activity during the early stage of infection. In contrast, the top genes upregulated in D14 exhibited negative fold changes ranging from −0.64 to −1.70 and were generally expressed across a high proportion of macrophages, suggesting a broader late-stage transcriptional shift affecting much of the population. These findings support substantial temporal remodeling of macrophage function during influenza infection, with distinct molecular programs operating during early and later stages of the response.
 
+<div align="center">
+
 | Gene | Direction | avg_log2FC | adj.P |
 |------|-----------|------------|-------|
 | Gene1 | Up in D02 | 2.473 | 8.92E-19 |
@@ -238,6 +240,7 @@ Comparison of macrophage transcriptomes between D02 and D14 identified distinct 
 | Gene8 | Up in D14 | -0.692 | 7.57E-39 |
 | Gene9 | Up in D14 | -0.650 | 1.58E-28 |
 | Gene10 | Up in D14 | -0.643 | 1.41E-36 |
+</div>
 
 # Discussion
 
