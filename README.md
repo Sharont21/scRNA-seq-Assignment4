@@ -133,6 +133,34 @@ UMAP visualization revealed clear transcriptional structure within the dataset, 
 
 Cells from all five samples were broadly distributed across the same UMAP structure, with substantial overlap observed within most clusters (Figure 6). This indicates that clustering was driven primarily by shared transcriptional cell states rather than by sample-specific technical effects. Although modest enrichment of certain samples was observed within selected regions, no major sample-exclusive clusters were detected. These results suggest minimal batch effects and support the suitability of the integrated dataset for comparative downstream analyses across infection timepoints.
 
+**Table 2. Predicted cell-type abundance based on SingleR annotation**. Cell identities were assigned using the SingleR reference-based annotation framework with the MouseRNAseqData reference dataset. Values indicate the number of cells assigned to each predicted cell type across the filtered dataset.
+
+Automated cell-type annotation identified a diverse mixture of epithelial, immune, stromal, and neuronal populations within the nasal mucosa dataset (Table 2). Neurons represented the largest predicted population (12,592 cells), followed by epithelial cells (5,521) and fibroblasts (5,290), indicating substantial contributions from structural and sensory cell types. Among immune populations, monocytes (3,300), B cells (2,806), macrophages (2,709), granulocytes (2,012), T cells (1,050), and NK cells (737) were also detected, consistent with active immune surveillance and inflammatory responses in nasal tissue. Smaller populations including endothelial cells, dendritic cells, erythrocytes, and rare glial-associated labels were also present. Overall, these results demonstrate marked cellular heterogeneity and support the presence of both resident tissue cells and infiltrating immune populations across infection timepoints
+
+<div align="center">
+  
+| Cell Type | Number of Cells |
+|-----------|----------------:|
+| Neurons | 12,592 |
+| Epithelial cells | 5,521 |
+| Fibroblasts | 5,290 |
+| Monocytes | 3,300 |
+| B cells | 2,806 |
+| Macrophages | 2,709 |
+| Endothelial cells | 2,354 |
+| Granulocytes | 2,012 |
+| T cells | 1,050 |
+| Hepatocytes | 963 |
+| NK cells | 737 |
+| Adipocytes | 236 |
+| Microglia | 176 |
+| Oligodendrocytes | 88 |
+| Erythrocytes | 85 |
+| Dendritic cells | 44 |
+| Cardiomyocytes | 19 |
+| Astrocytes | 18 |
+</div>
+
 # Discussion
 
 # References
