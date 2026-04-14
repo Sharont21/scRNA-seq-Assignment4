@@ -1,0 +1,519 @@
+---
+title: "Assignment_04"
+author: "Sharon Tsukernik"
+date: "2026-04-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Loading libraries
+library(Seurat)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(clusterProfiler)
+library(org.Mm.eg.db)   # mouse genes
+library(devtools)
+library(SingleR)
+library(celldex)
+library(EnhancedVolcano)
+library(SingleCellExperiment)
+
+```
+
+
+```{r}
+# Loading and inspecting data
+
+seurat <- readRDS("seurat_ass4.rds")
+
+seurat
+head(seurat@meta.data)
+```
+
+
+```{r}
+# Quality Control
+
+# Mitochondrial ratio
+seurat[["percent.mt"]] <- PercentageFeatureSet(seurat, pattern = "^mt-")
+
+# Visualizing QC metrics as a violin before filtering
+VlnPlot(
+  seurat,
+  features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
+  group.by = "orig.ident",
+  ncol = 3,
+  pt.size = 0
+) 
+
+# Scatter plot to check nCount vs nFeature
+FeatureScatter(
+  seurat,
+  feature1 = "nCount_RNA",
+  feature2 = "nFeature_RNA",
+  group.by = "orig.ident"    
+) +
+  ggtitle("nCount vs nFeature (before filtering)")
+
+# Filtering cells to remove low genes and high mitochondrial %
+seurat <- subset(seurat, subset = nFeature_RNA > 200 & percent.mt < 15) 
+
+# Violion plot after filtering
+VlnPlot(
+  seurat,
+  features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
+  group.by = "orig.ident",
+  ncol     = 3,
+  pt.size  = 0
+) 
+
+```
+
+```{r}
+# Normalizing data and finding variable features
+
+# Setting seed for reproducibility
+set.seed(42)
+seurat <- subset(seurat, downsample = 8000)  # 8000 cells per sample = ~40,000 total
+
+#rm(list = setdiff(ls(), "seurat")) 
+#gc()
+seurat <- NormalizeData(seurat, normalization.method = "LogNormalize", scale.factor = 10000)
+
+seurat <- FindVariableFeatures(
+  seurat,
+  selection.method = "vst",
+  nfeatures = 2000
+)
+
+# Plot top variable genes
+top20 <- head(VariableFeatures(seurat), 20)
+plot1 <- VariableFeaturePlot(seurat) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+LabelPoints(
+  plot   = plot1,
+  points = top20,
+  repel  = TRUE,
+  xnudge = 0,      # required when repel=TRUE
+  ynudge = 0
+) + ggtitle("Top 20 Highly Variable Features")
+
+# scaling all genes 
+seurat <- ScaleData(seurat, features = VariableFeatures(seurat))
+
+```
+
+```{r}
+# PCA
+
+seurat <- RunPCA(seurat, features = VariableFeatures(seurat))
+
+# Elbow plot to decide how many PCs to use
+ElbowPlot(seurat, ndims = 30) +
+  ggtitle("Elbow Plot")
+
+
+# Visualizing top genes driving PC1 and PC2
+VizDimLoadings(seurat, dims = 1:2, reduction = "pca")
+
+```
+
+```{r}
+# Clustering
+seurat <- FindNeighbors(seurat, dims = 1:20)
+
+seurat <- FindClusters(seurat, resolution = 0.5)
+
+```
+
+```{r}
+# UMAP
+
+seurat <- RunUMAP(seurat, dims = 1:20)
+
+# UMAP coloured by cluster
+p1 <- DimPlot(seurat, reduction = "umap", label = TRUE, repel = TRUE) +
+  ggtitle("UMAP - Seurat Clusters")
+
+# UMAP coloured by sample/timepoint to check batch effects
+p2 <- DimPlot(seurat, reduction = "umap", group.by = "orig.ident") +
+  ggtitle("UMAP - Sample Identity")
+
+print(p1)
+print(p2)
+
+```
+
+```{r}
+
+# Automated Annotation with SingleR
+
+# Converting seurat object
+sce <- as.SingleCellExperiment(seurat)
+
+# Load mouse RNA-seq reference (ImmGen also works for immune-focused studies)
+ref <- MouseRNAseqData()
+
+# Running SingleR
+pred <- SingleR(
+  test   = sce,
+  ref    = ref,
+  labels = ref$label.main
+)
+
+# Inspecting predicted labels
+print(table(pred$labels))
+
+seurat$singler_labels <- pred$labels
+
+# Heatmap
+plotScoreHeatmap(pred)
+
+# Delta distribution plot 
+plotDeltaDistribution(pred, ncol = 3)
+
+Idents(seurat) <- seurat$singler_labels
+
+# UMAP coloured by annotated cell type
+DimPlot(seurat, reduction = "umap", label = TRUE, repel = TRUE) +
+  ggtitle("UMAP - SingleR Cell Type Annotation") +
+  theme(legend.position = "right")
+```
+
+```{r}
+# Finding cluster markers for manual verification
+
+seurat_small <- subset(seurat, downsample = 500)
+
+markers <- FindAllMarkers(
+  seurat_small,
+  only.pos = TRUE,
+  min.pct = 0.25,
+  logfc.threshold = 0.25
+)
+
+head(markers)
+
+# Top 5 markers per cell type
+top_markers <- markers %>%
+  group_by(cluster) %>%
+  slice_max(order_by = avg_log2FC, n = 5)
+
+print(top_markers)
+
+saveRDS(markers, "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/markers.rds")
+write.csv(markers, "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/all_cluster_markers.csv", row.names = TRUE)
+
+
+```
+
+
+```{r}
+# Feature plots
+
+# T cells: Cd3d, Cd8a
+# B cells: Ms4a1 (CD20)
+# Macrophages/Monocytes: Lyz2, Csf1r
+# Epithelial: Epcam, Krt8
+# NK cells: Ncr1
+# Dendritic cells: Itgax (CD11c)
+
+  
+FeaturePlot(
+  seurat,
+  features = c("Cd3d","Cd8a","Ms4a1","Ncr1"),
+  ncol = 2,
+  min.cutoff = "q5"
+)
+
+FeaturePlot(
+  seurat,
+  features = c("Lyz2","Itgax","Csf1r","Epcam"),
+  ncol = 2,
+  min.cutoff = "q5"
+)
+
+# Violin plots for top markers across annotated cell types
+VlnPlot(
+  seurat,
+  features = c("Lyz2", "Cd3d", "Ms4a1", "Epcam"),
+  ncol     = 2,
+  pt.size  = 0
+) & theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1))
+
+```
+
+```{r}
+# Cell composition analysis
+
+# Counting cells per sample and cell type
+comp <- seurat@meta.data %>%
+  group_by(orig.ident, singler_labels) %>%
+  summarise(n = n(), .groups = "drop")
+
+# Keeping top 10 most abundant cell types overall
+top_types <- comp %>%
+  group_by(singler_labels) %>%
+  summarise(total = sum(n)) %>%
+  slice_max(order_by = total, n = 10) %>%
+  pull(singler_labels)
+
+# Collapsing remaining rare cell types into "Other"
+comp_plot <- comp %>%
+  mutate(celltype_plot = ifelse(singler_labels %in% top_types,
+                                singler_labels,
+                                "Other")) %>%
+  group_by(orig.ident, celltype_plot) %>%
+  summarise(n = sum(n), .groups = "drop")
+
+# Relative proportions
+
+comp_prop <- comp_plot %>%
+  group_by(orig.ident) %>%
+  mutate(freq = n / sum(n))
+
+p3 <- ggplot(comp_prop, aes(x = orig.ident, y = freq, fill = celltype_plot)) +
+  geom_bar(stat = "identity", width = 0.8) +
+  scale_fill_brewer(palette = "Set3") +
+  labs(
+    title = "Cell Type Composition Per Sample",
+    x = "Sample",
+    y = "Proportion",
+    fill = "Cell Type"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.major.x = element_blank()
+  )
+
+p3
+
+# Absolute cell counts
+p4 <- ggplot(comp_plot, aes(x = orig.ident, y = n, fill = celltype_plot)) +
+  geom_bar(stat = "identity", width = 0.8) +
+  scale_fill_brewer(palette = "Set3") +
+  labs(
+    title = "Absolute Cell Counts Per Sample",
+    x = "Sample",
+    y = "Cell Count",
+    fill = "Cell Type"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.major.x = element_blank()
+  )
+
+p4
+
+
+
+```
+
+
+```{r}
+
+# Differential expression within macrophages (D02 vs D14)
+
+# Subseting macrophages 
+cluster_cells <- subset(seurat, idents = "Macrophages")
+
+# Setting identity to sample for DE 
+Idents(cluster_cells) <- cluster_cells$orig.ident
+
+# D02 vs D14
+# Comparing early vs late infection response
+de_all <- FindMarkers(
+  cluster_cells,
+  ident.1         = "D02",
+  ident.2         = "D14",
+  min.pct         = 0.1,
+  logfc.threshold = 0      
+)
+
+# Filtering for significant results 
+de_sig <- de_all %>%
+  filter(p_val_adj < 0.05) %>%
+  arrange(desc(avg_log2FC))
+
+de_all
+de_sig
+
+write.csv(de_sig, "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/DE_results_macrophages.csv", row.names = TRUE)
+write.csv(de_all, "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/DE_results_macrophages_all.csv", row.names = TRUE)
+
+```
+
+```{r}
+# Volcano Plot
+# visualizing effect size vs significance
+EnhancedVolcano(
+  de_all,
+  lab            = rownames(de_all),
+  x              = "avg_log2FC",
+  y              = "p_val_adj",
+  title          = "Macrophages: D02 vs D14",
+  subtitle       = "Influenza A Virus nasal mucosa infection",
+  pCutoff        = 0.05,
+  FCcutoff       = 0.5,
+  pointSize      = 1.5,
+  labSize        = 3.5,
+  col            = c("grey70", "steelblue", "orange", "firebrick"),
+  legendLabels   = c("NS", "Log2FC > 0.5", "p-adj < 0.05", "Both"),
+  drawConnectors = TRUE,
+  selectLab      = head(rownames(de_all[order(de_all$p_val_adj), ]), 15), # top 15 labels
+  max.overlaps   = 20,
+  boxedLabels    = TRUE   
+)
+```
+
+
+
+```{r}
+# ORA on significant upregulated genes in D02 vs D14 
+
+up_genes   <- rownames(de_sig %>% filter(avg_log2FC > 0))   # up in D02
+down_genes <- rownames(de_sig %>% filter(avg_log2FC < 0))   # up in D14
+
+# GO Biological Process ORA — upregulated in early infection (D02)
+ego_up <- enrichGO(
+  gene          = up_genes,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "SYMBOL",
+  ont           = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  readable      = TRUE
+)
+
+# GO Biological Process ORA — upregulated in late infection (D14)
+ego_down <- enrichGO(
+  gene          = down_genes,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "SYMBOL",
+  ont           = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  readable      = TRUE
+)
+
+# Dot plots
+if (!is.null(ego_up) && nrow(ego_up) > 0) {
+  print(dotplot(ego_up, showCategory = 15) +
+    ggtitle("ORA: GO BP — Upregulated in D02 Macrophages"))
+}
+
+if (!is.null(ego_down) && nrow(ego_down) > 0) {
+  print(dotplot(ego_down, showCategory = 15) +
+    ggtitle("ORA: GO BP — Upregulated in D14 Macrophages"))
+}
+
+```
+
+```{r}
+# GSEA
+
+
+# Building ranked gene list
+gene_list <- de_all$avg_log2FC
+names(gene_list) <- rownames(de_all)
+gene_list <- sort(gene_list, decreasing = TRUE)
+
+# Removing duplicate gene names if any
+gene_list <- gene_list[!duplicated(names(gene_list))]
+
+# Running GSEA on GO Biological Process terms
+gsea_res <- gseGO(
+  geneList      = gene_list,
+  OrgDb         = org.Mm.eg.db,
+  keyType       = "SYMBOL",
+  ont           = "BP",
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  verbose       = FALSE,
+  seed          = 42
+)
+
+if (!is.null(gsea_res) && nrow(gsea_res) > 0) {
+  # Dot plot
+  print(dotplot(gsea_res, showCategory = 15, split = ".sign") +
+    facet_grid(. ~ .sign) +
+    ggtitle("GSEA: GO BP — Macrophages D02 vs D14"))
+
+  # Ridge plot: distribution of enrichment scores
+  library(enrichplot)
+  print(ridgeplot(gsea_res, showCategory = 10) +
+    ggtitle("GSEA Ridge Plot — Top Pathways"))
+
+  # GSEA plot for the top enriched term
+  print(gseaplot2(gsea_res, geneSetID = 1, title = gsea_res$Description[1]))
+
+} else {
+  cat("No significant GSEA terms found at p-adj < 0.05\n")
+}
+
+# Saving results
+if (!is.null(gsea_res)) {
+  write.csv(as.data.frame(gsea_res), "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/GSEA_results_macrophages.csv", row.names = FALSE)
+}
+```
+
+```{r}
+# Heatmap of top 20 DE genes in macrophages 
+top_de_genes <- c(
+  head(rownames(de_sig %>% filter(avg_log2FC > 0)), 10),   # top 10 up in D02
+  head(rownames(de_sig %>% filter(avg_log2FC < 0)), 10)    # top 10 up in D14
+)
+
+# Only keeping genes that exist in the object
+top_de_genes <- top_de_genes[top_de_genes %in% rownames(seurat)]
+
+if (length(top_de_genes) > 0) {
+  DoHeatmap(
+    cluster_cells,
+    features = top_de_genes,
+    group.by = "orig.ident",
+    size     = 3
+  ) +
+    ggtitle("Top DE Genes in Macrophages: D02 vs D14")
+}
+
+top_de_genes
+
+# Combining into one final table
+top_de_table <- bind_rows(
+  de_sig %>%
+    filter(avg_log2FC > 0) %>%
+    arrange(p_val_adj) %>%
+    head(10) %>%
+    mutate(direction = "Up in D02"),
+  
+  de_sig %>%
+    filter(avg_log2FC < 0) %>%
+    arrange(p_val_adj) %>%
+    head(10) %>%
+    mutate(direction = "Up in D14")
+) %>%
+  dplyr::select(direction, avg_log2FC, pct.1, pct.2, p_val_adj) %>%
+  mutate(
+    avg_log2FC = round(avg_log2FC, 3),
+    p_val_adj  = formatC(p_val_adj, format = "e", digits = 2)  # scientific notation
+  )
+top_de_table
+
+write.csv(
+  top_de_table,
+  "C:/Users/sharo/OneDrive/BINF 6110/Assignment_04/top_DE_genes_macrophages.csv",
+  row.names = FALSE
+)
+
+
+```
